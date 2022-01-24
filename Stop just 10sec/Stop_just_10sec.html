@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Stop Just 10sec</title>
+<script src="./js/jquery-3.6.0.min.js"></script>
+<script>
+$(function () {
+    var centisec = 0;
+    var sec = 0;
+    var timer;
+    
+    //スタート
+    $('#start').click(function() {
+        //00:00から開始
+        centisec = 0;
+        sec = 0;
+        
+        $('#clock').html('00:00');
+        timer = setInterval(countup, 10);
+        
+        $("#clock").fadeOut(3000);
+        
+        $(this).prop('disabled', true);
+        $('#stop,#reset').prop('disabled', false);
+    });
+    
+    //ストップ
+    $('#stop').click(function() {
+        //一時停止
+        clearInterval(timer);
+        
+        $("#clock").stop(true,true);
+        $("#clock").show();
+        if(sec == 10 && centisec == 0) {
+            $("#result").text("JUST 10!!!!!");
+            $("#result").css("color", "red");
+            $("#result").animate({fontSize: '100px'}, "slow");
+        }else if((sec == 10 && centisec <= 10) || (sec == 9 && centisec >= 90)) {
+            $("#result").text("Within 0.10sec!!!");
+            $("#result").animate({fontSize: '80px'}, "slow");
+        }else if((sec == 10 && centisec <= 50) || (sec == 9 && centisec >= 50)) {
+            $("#result").text("Within 0.50sec!!");
+            $("#result").animate({fontSize: '60px'}, "slow");
+        }else if(sec == 10 || sec == 9) {
+            $("#result").text("Within 1.00sec!");
+            $("#result").animate({fontSize: '45px'}, "slow");
+        }else{
+            $("#result").text("oh...");
+            $("#result").animate({fontSize: '30px'}, "slow");
+        }
+        
+        $(this).prop('disabled', true);
+        $('#restart').prop('disabled', false);
+    });
+    
+    //リセット
+    $('#reset').click(function() {
+        //初期状態
+        centisec = 0;
+        sec = 0;
+        $('#clock').html('00:00');
+        $("#clock").stop(true,true);
+        $("#clock").show();
+        $("#result").text("");
+        $("#result").css("font-size", "1px");
+        clearInterval(timer);
+        
+        $('#stop,#reset').prop('disabled', true);
+        $('#start').prop('disabled', false);
+    });
+    
+    //カウントアップ
+    function countup() {
+        centisec += 1;
+        
+        if (centisec > 99) {
+            centisec = 0;
+            sec += 1;
+        }
+        
+        //0埋め
+        centisec_number = ('0' + centisec).slice(-2);
+        sec_number = ('0' + sec).slice(-2);
+        
+        $('#clock').html(sec_number + ':' + centisec_number);
+    }
+});
+</script>
+<style>
+#start,#stop,#reset{
+    width:100px;
+    height:50px;
+}
+#clock{
+    margin: 16px auto;
+    font-size:50px;
+}
+#result{
+    font-size:1px;
+}
+</style>
+</head>
+<body>
+<div style="text-align: center">
+    <h1>Stop Just 10sec</h1>
+    <p>
+    Stop just 10sec. (disappear after 3sec. reappear when stopped.)<br>
+    (It will stop when you release the stop button.)
+    </p>
+    <form>
+        <input type="button" id="start" value="Start">
+        <input type="button" id="stop" value="Stop" disabled>
+        <input type="button" id="reset" value="Reset" disabled>
+    </form>
+    <div id="clock">00:00</div>
+    <div id="result"></div>
+</div>
+
+</body>
+</html>
