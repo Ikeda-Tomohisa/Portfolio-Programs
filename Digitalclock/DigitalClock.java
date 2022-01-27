@@ -48,7 +48,7 @@ class DrawPanel extends JPanel implements ActionListener {
         Calendar ca = Calendar.getInstance();
         String str1 = String.format("%d/%2d/%2d(%s)",
                                     ca.get(Calendar.YEAR),
-                                    ca.get(Calendar.MONTH + 1),
+                                    ca.get(Calendar.MONTH) + 1,
                                     ca.get(Calendar.DATE),
                                     WEEK_NAME[ca.get(Calendar.DAY_OF_WEEK)-1]
                                     );
